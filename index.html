@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>e-Tani - Belanja Sayuran Online</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+    />
+    <link rel="stylesheet" href="css/mdb.min.css" />
+    <link rel="stylesheet" href="css/vue-toast.css" />
+    <script type="text/javascript" src="js/vue-toast.js"></script>
+  </head>
+  <body style="min-height: 100vh;">
+    <div id="app">
+      <div>
+            <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+          <!-- Container wrapper -->
+          <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="#">Brand</a>
+
+            <!-- Toggle button -->
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" > <i class="fas fa-bars"></i> </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <!-- Left links -->
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <!-- Navbar dropdown -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown" aria-expanded="false" > Kategori </a>
+                  <!-- Dropdown menu -->
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!" @click="setProducts('all')">Semua Produk</a></li>
+                    <li><a class="dropdown-item" href="#!" @click="setProducts('vegetables')">Sayuran</a></li>
+                    <li><a class="dropdown-item" href="#!" @click="setProducts('fruits')">Buah - Buahan</a></li>
+                    <li> <a class="dropdown-item" href="#!" @click="setProducts('mix')">Produk Pertanian</a> </li> </ul>
+                </li>
+                <li class="nav-item me-3 me-lg-0">
+                  <a class="nav-link active" href="#!"  data-mdb-toggle="modal" data-mdb-target="#modalCart" >
+                    <i class="fas fa-shopping-cart"></i><span class="badge bg-danger ms-2" v-if="carts.length > 0">{{ carts.length }}</span>
+                  </a>
+                </li>
+                
+              </ul>
+              <!-- Left links -->
+
+              <!-- Search form -->
+              <form class="d-flex input-group w-auto">
+                <input type="search" class="form-control" placeholder="Cari..." aria-label="Search" required />
+                <button class="btn btn-outline-light" type="button" data-mdb-ripple-color="dark" >
+                  <i class="fas fa-search"></i>
+                </button>
+              </form>
+            </div>
+            <!-- Collapsible wrapper -->
+          </div>
+          <!-- Container wrapper -->
+        </nav>
+
+        <!-- Navbar -->
+        <div class="container">
+          <!-- Carousel wrapper -->
+          <div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel" >
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+              <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" ></button>
+              <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="1" aria-label="Slide 2" ></button>
+              <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="2" aria-label="Slide 3" ></button>
+            </div>
+
+            <!-- Inner -->
+            <div class="carousel-inner">
+              <!-- Single item -->
+              <div class="carousel-item active">
+                <img src="img/jeruk.jpg" class="d-block w-100" style="width: 100%; height: 400px; max-height: 50%; object-fit: cover;" />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Buah-Buahan Segar</h5>
+                  <p>Jeruk Segar Langsung dari Kebun!</p>
+                </div>
+              </div>
+
+              <!-- Single item -->
+              <div class="carousel-item">
+                <img src="img/buncis.jpg" class="d-block w-100" alt="..."  style="width: 100%; height: 400px; max-height: 50%; object-fit: cover;" />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Sayuran Alami</h5>
+                  <p>Kami ambil sayuran langsung dari petani!</p>
+                </div>
+              </div>
+
+              <!-- Single item -->
+              <div class="carousel-item">
+                <img src="img/kopi.jpg" class="d-block w-100" alt="..." style="width: 100%; height: 400px; max-height: 50%; object-fit: cover;" />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Olahan Petani</h5>
+                  <p>Tersedia juga olahan produk pertanian yang sehat!</p>
+                </div>
+              </div>
+            </div>
+            <!-- Inner -->
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="prev" > <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="visually-hidden">Previous</span> </button>
+            <button class="carousel-control-next" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="next" > <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="visually-hidden">Next</span> </button>
+          </div>
+            <!-- Carousel wrapper -->
+          <h1 class="text-center mt-4">Selamat Datang Di e-Tani!</h1>
+          <p class="text-center">Belanja buah dan sayur langsung dari petani!</p>
+
+          <h2 v-if="selected == 'all'">Semua Produk</h2>
+          <h2 v-if="selected == 'fruits'">Buah - Buahan</h2>
+          <h2 v-if="selected == 'vegetables'">Sayuran</h2>
+          <h2 v-if="selected == 'mix'">Produk Pertanian</h2>
+
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-primary btn-lg dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-mdb-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Pilih Kategori
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" href="#!" @click="setProducts('all')">Semua Produk</a></li>
+              <li><a class="dropdown-item" href="#!" @click="setProducts('vegetables')">Sayuran</a></li>
+              <li><a class="dropdown-item" href="#!" @click="setProducts('fruits')">Buah - Buahan</a></li>
+              <li> <a class="dropdown-item" href="#!" @click="setProducts('mix')">Produk Pertanian</a> </li> </ul>
+            </ul>
+          </div>
+
+          <div class="vegetables mt-5" v-if="selected == 'vegetables' || selected == 'all'">
+            <h3><i class="fas fa-seedling text-success"></i> Sayuran</h3>
+            <div class="row">
+              <div class="col-lg-3 col-sm-2 mt-3" v-for="(vegetable, i) in vegetables" :key="i">
+                <div class="card shadow" style="width: 18rem;">
+                  <img
+                    :src="'img/' + vegetable.image"
+                    class="card-img-top"
+                    style="width: 100%; height: 200px; object-fit: cover;"
+                    :alt="vegetable.name"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">{{ vegetable.name }}</h5>
+                    <p>Harga : Rp. {{ vegetable.price }}</p>
+                    <a href="#!" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#modalDetail" @click="detailProduct(vegetable)"><i class="fas fa-eye"></i> Detail</a>
+                    <a href="#!" class="btn btn-success" data-toggle="tooltip" title="Tambah ke keranjang"  @click="addToCart(vegetable)" >
+                      <i class="fas fa-cart-plus"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+
+          <div class="fruits mt-5" v-if="selected == 'fruits' || selected == 'all'">
+            <h3><i class="fas fa-apple-alt text-warning"></i> Buah</h3>
+            <div class="row">
+              <div class="col-lg-3 col-sm-2 mt-3" v-for="(fruit, i) in fruits" :key="i">
+                <div class="card shadow" style="width: 18rem;">
+                  <img
+                    :src="'img/' + fruit.image"
+                    class="card-img-top"
+                    style="width: 100%; height: 200px; object-fit: cover;"
+                    alt="..."
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">{{ fruit.name }}</h5>
+                    <p>Harga : Rp. {{ fruit.price }}</p>
+                    <a href="#!" class="btn btn-primary"  data-mdb-toggle="modal" data-mdb-target="#modalDetail"  @click="detailProduct(fruit)" ><i class="fas fa-eye"></i> Detail</a>
+                    <a href="#!" class="btn btn-success"   data-toggle="tooltip" title="Tambah ke keranjang" @click="addToCart(fruit)" >
+                      <i class="fas fa-cart-plus"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mix mt-5" v-if="selected == 'mix' || selected == 'all'">
+            <h3><i class="fas fa-blender text-danger"></i> Produk Pertanian</h3>
+            <div class="row">
+              <div class="col-lg-3 col-sm-2 mt-3" v-for="(m, i) in mix" :key="i">
+                <div class="card shadow" style="width: 18rem;">
+                  <img
+                    :src="'img/' + m.image"
+                    class="card-img-top"
+                    style="width: 100%; height: 200px; object-fit: cover;"
+                    alt="..."
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">{{ m.name }}</h5>
+                    <p>Harga : Rp. {{ m.price }}</p>
+                    <a href="#!" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#modalDetail"   @click="detailProduct(m)" ><i class="fas fa-eye"></i> Detail</a>
+                    <a href="#!" class="btn btn-success"  data-toggle="tooltip" title="Tambah ke keranjang"  @click="addToCart(m)" >
+                      <i class="fas fa-cart-plus"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Cart Modal  -->
+      <div class="modal fade" id="modalCart" tabindex="-1" aria-labelledby="modalCartLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalCartLabel">Keranjang</h5>
+              <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" ></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <tr>
+                  <th>#</th>
+                  <th>Nama Produk</th>
+                  <th>Harga</th>
+                  <th>Jumlah</th>
+                  <th>Subtotal</th>
+                </tr>
+                <div v-if="carts.length > 0">
+                  <tr v-for="(cart, i) in carts" :key="i">
+                    <td>{{ i+1 }}</td>
+                    <td>{{ cart.name }}</td>
+                    <td>Rp. {{ cart.price }}</td>
+                    <td>
+                      {{ cart.total }} 
+                      <button type="button" class="btn btn-success btn-sm btn-floating ms-2" @click="addTotal(i)">
+                        +
+                      </button>
+                      <button type="button" class="btn btn-warning btn-sm btn-floating" @click="reduceTotal(i)">
+                        -
+                      </button>
+                    </td>
+                    <td>Rp. {{ cart.total * cart.price }}</td>
+                  </tr>
+                </div>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                Kembali
+              </button>
+              <button type="button" class="btn btn-primary" v-if="carts.length > 0" @click="orderNow()">Pesan Sekarang</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Detail produk Modal  -->
+      <div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="modalDetailLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content" v-if="detail">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalDetailLabel">Detail Produk</h5>
+              <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" ></button>
+            </div>
+            <div class="modal-body" v-if="detail">
+              <table class="table">
+                <tr>
+                  <td><b>Nama Produk</b></td>
+                  <td>:</td>
+                  <td>{{ detail.name }}</td>
+                </tr>
+                <tr>
+                  <td><b>Foto Produk</b></td>
+                  <td>:</td>
+                  <td><img :src="'img/' + detail.image" style="width: 160px; height: 90px; max-height: 50%; object-fit: cover;"></td>
+                </tr>
+                <tr>
+                  <td><b>Harga</b></td>
+                  <td>:</td>
+                  <td>Rp. {{ detail.price }}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                Kembali
+              </button>
+              <a href="#!" class="btn btn-success"   data-toggle="tooltip" title="Tambah ke keranjang" @click="addToCart(detail)" >
+                Tambah Keranjang
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
+    
+    
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5">
+      <div class="container p-4">
+        <section class="mb-4">
+          <p>
+            <b>e-Tani</b> merupakan platform yang menyediakan hasil pertanian seperti buah dan sayuran secara online. Anda tidak perlu repot lagi untuk pergi kepasar. Dapatkan buah dan sayuran terbaik dan segar langsung dari petani !
+          </p>
+        </section>
+
+        <section class="">
+          <div class="row">
+            <div class="col-lg-4 col-sm-2">
+              <h5 class="text-uppercase">Produk Terbaik kami</h5>
+
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="#!" class="text-white">Wortel</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">Sawi</a>
+                </li>
+                <li>
+              </ul>
+            </div>
+
+            <div class="col-lg-4 col-sm-2">
+              <h5 class="text-uppercase">Kategori</h5>
+
+              <ul class="list-unstyled mb-0">
+                <li><a class="text-white" href="#!">Semua Produk</a></li>
+                <li><a class="text-white" href="#!">Sayuran</a></li>
+                <li><a class="text-white" href="#!">Buah - buahan</a></li>
+                <li> <a class="text-white" href="#!">Makanan Kaleng</a> </li> </ul>
+              </ul>
+            </div>
+
+            <div class="col-lg-4 col-sm-2 text-center">
+              <h5 class="text-uppercase">Sosial Media e-Tani</h5>
+
+              <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+
+              <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-whatsapp"></i
+              ></a>
+              <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-youtube"></i
+              ></a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        <p><img src="img/profil.png" alt="profil" width="200px"></p>
+        <p>© 2021 Copyright</p>
+        <b>
+          <a class="text-white" href="https://github.com/muhammadihsanansory">Muhamad Ihsan Ansory | 23183017</a>
+        </b>
+      </div>
+    </footer>
+    <!-- Footer -->
+
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+  </body>
+</html>
