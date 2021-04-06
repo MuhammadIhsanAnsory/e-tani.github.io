@@ -81,7 +81,7 @@ var app = new Vue({
             {
                 name: 'Brokoli',
                 price: 11000,
-                image: 'Brokoli.jpg',
+                image: 'brokoli.jpg',
                 total: 1
             },
             {
